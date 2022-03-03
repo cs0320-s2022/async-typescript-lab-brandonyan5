@@ -1,23 +1,40 @@
 // TODO: select the list element where the suggestions should go, and all three dropdown elements
 //  HINT: look at the HTML
+const suggestionList = document.getElementById("suggestions");
+const firstDropdown = document.getElementById("sun");
+const secondDropdown = document.getElementById("moon");
+const thirdDropdown = document.getElementById("rising");
 
 // Here, when the value of sun is changed, we will call the method postAndUpdate.
 // TODO: Do the same for moon and rising
+const sun = document.getElementById("sun")
+const rising = document.getElementById("rising")
+
 
 // TODO: Define a type for the request data object here.
-// type MatchesRequestData = {}
+type MatchesRequestData = {
+  sun: string
+  moon: string
+  rising: string
+}
 
 // TODO: Define a type for the response data object here.
-// type Matches = {}
+type Matches = {
+  matches: string[]
+}
 
 function postAndUpdate(): void {
   // TODO: empty the suggestionList (you want new suggestions each time someone types something new)
   //  HINT: use .innerHTML
+  suggestionList.innerHTML = "";
 
   // TODO: add a type annotation to make this of type MatchesRequestData
+
+
   const postParameters = {
     // TODO: get the text inside the input box
     //  HINT: use sun.value to get the value of the sun field, for example
+    sun.value =
   };
 
   console.log(postParameters)
@@ -26,6 +43,9 @@ function postAndUpdate(): void {
   //  HINT: check out the POST REQUESTS section of the lab and of the front-end guide.
   //  Make sure you add "Access-Control-Allow-Origin":"*" to your headers.
   //  Remember to add a type annotation for the response data using the Matches type you defined above!
+  const result = fetch('/result')
+
+
 
   // TODO: Call and fill in the updateSuggestions method in one of the .then statements in the Promise
   //  Parse the JSON in the response object
