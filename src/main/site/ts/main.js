@@ -10,10 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 // TODO: select the list element where the suggestions should go, and all three dropdown elements
 //  HINT: look at the HTML
-const listOfSuggestions = document.querySelector("#suggestions");
-const firstDropdownSun = document.querySelector("#sun");
-const secondDropdownMoon = document.querySelector("#moon");
-const thirdDropdownRising = document.querySelector("#rising");
+const listOfSuggestions = document.getElementById("suggestions");
+const firstDropdownSun = document.getElementById("sun");
+const secondDropdownMoon = document.getElementById("moon");
+const thirdDropdownRising = document.getElementById("rising");
 // Here, when the value of sun is changed, we will call the method postAndUpdate.
 // TODO: Do the same for moon and rising
 firstDropdownSun.addEventListener("change", postAndUpdate);
@@ -27,30 +27,29 @@ function postAndUpdate() {
     const postParameters = {
         // TODO: get the text inside the input box
         //  HINT: use sun.value to get the value of the sun field, for example
-        "sun": firstDropdownSun.value,
-        "moon": secondDropdownMoon.value,
-        "rising": thirdDropdownRising.value,
+        sun: firstDropdownSun.value,
+        moon: secondDropdownMoon.value,
+        rising: thirdDropdownRising.value
     };
     console.log(postParameters);
     // TODO: make a POST request using fetch to the URL to handle this request you set in your Main.java
     //  HINT: check out the POST REQUESTS section of the lab and of the front-end guide.
     //  Make sure you add "Access-Control-Allow-Origin":"*" to your headers.
     //  Remember to add a type annotation for the response data using the Matches type you defined above!
-    fetch("http://127.0.0.1:8080/result", {
-        method: 'post',
-        body: JSON.stringify(postParameters),
+    // TODO: Call and fill in the updateSuggestions method in one of the .then statements in the Promise
+    //  Parse the JSON in the response object
+    //  HINT: remember to get the specific field in the JSON you want to use
+    fetch('http://localhost:4567/result', {
+        // Request method
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json; charset=UTF-8',
+            "Content-Type": "applications/json",
             "Access-Control-Allow-Origin": "*",
         },
+        // Data in JSON format to send in the request
+        body: JSON.stringify(postParameters),
     })
-        // TODO: Call and fill in the updateSuggestions method in one of the .then statements in the Promise
-        //  Parse the JSON in the response object
-        //  HINT: remember to get the specific field in the JSON you want to use
-        .then((response) => response.json())
-        .then((jsonResponse) => {
-        updateSuggestions(jsonResponse.data);
-    });
+        .then((response) => response.json()).then((data) => updateSuggestions(data.matches));
 }
 function updateSuggestions(matches) {
     // TODO: for each element in the set of matches, append it to the suggestionList
@@ -58,8 +57,8 @@ function updateSuggestions(matches) {
     //  NOTE: you should use <li> (list item) tags to wrap each element. When you do so,
     //  make sure to add the attribute 'tabindex="0"' (for example: <li tabindex="0">{your element}</li>).
     //  This makes each element selectable via screen reader.
-    for (let i = 0; i < matches.length; i++) {
-        listOfSuggestions.innerHTML += `<li tabindex=\"${i}\">${matches[i]}</li>\n`;
+    for (const theMatch of matches) {
+        listOfSuggestions.innerHTML += `<li tabindex="0">{theMatch}</li>`;
     }
 }
 // TODO: create an event listener to the document (document.addEventListener) that detects "keyup".
@@ -67,6 +66,12 @@ function updateSuggestions(matches) {
 //  values for the sun, moon, and rising using updateValues. Then call postAndUpdate().
 //  HINT: the listener callback function should be asynchronous and wait until the values are
 //  updated before calling postAndUpdate().
+document.addEventListener("keyup", (event) => __awaiter(void 0, void 0, void 0, function* () {
+    if (event.key === "1") {
+        yield updateValues("Capricorn", "Capricorn", "Capricorn");
+        postAndUpdate();
+    }
+}));
 function updateValues(sunval, moonval, risingval) {
     return __awaiter(this, void 0, void 0, function* () {
         // This line asynchronously waits 1 second before updating the values.
@@ -75,7 +80,5 @@ function updateValues(sunval, moonval, risingval) {
         firstDropdownSun.value = sunval;
         secondDropdownMoon.value = moonval;
         thirdDropdownRising.value = risingval;
-        document.addEventListener("keyup", () => updateValues("Leo", "Leo", "Leo")
-            .then(postAndUpdate));
     });
 }

@@ -113,22 +113,25 @@ public final class Main {
             // TODO: Get JSONObject from req and use it to get the value of the sun, moon,
             // and rising
             // for generating matches
-            JSONObject resJSON = null;
+            JSONObject resJson = null;
             try {
-                resJSON = new JSONObject(req.body());
+                // Put the request's body in JSON format
+                resJson = new JSONObject(req.body());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String sun = resJSON.getString("sun");
-            String moon = resJSON.getString("moon");
-            String rising = resJSON.getString("rising");
 
+            String sun = resJson.getString("sun");
+            String moon = resJson.getString("moon");
+            String rising = resJson.getString("rising");
 
             // TODO: use the MatchMaker.makeMatches method to get matches
-            List<String> matches = MatchMaker.makeMatches(sun, moon, rising);
+
+            List<String> matchesList = MatchMaker.makeMatches(sun, moon, rising);
 
             // TODO: create an immutable map using the matches
-            Map variables = ImmutableMap.of("data", matches);
+
+            Map variables = ImmutableMap.of("data", matchesList);
 
             // TODO: return a json of the suggestions (HINT: use GSON.toJson())
             Gson GSON = new Gson();
